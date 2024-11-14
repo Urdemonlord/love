@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vertical Love Explosion</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            transform: rotate(45deg);
+            animation: pulse 2s infinite ease-in-out, colorChange 2s infinite;
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -50px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: 50px;
+            top: 0;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1) rotate(315deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(315deg);
+            }
+            100% {
+                transform: scale(1) rotate(315deg);
+            }
+        }
+
+        
+
+        .explosion {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: explode 0.6s ease-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes explode {
+            0% {
+                opacity: 1;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(3);
+            }
+        }
+
+        .message {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            color: white;
+            text-align: center;
+        }
+
+        .falling {
+            position: absolute;
+            top: -50px;
+            font-size: 40px;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                top: -50px;
+                opacity: 1;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+            }
+        }
+
+        /* Munculkan es krim dan cinta secara acak */
+        .falling.love {
+            color: pink;
+        }
+
+        .falling.ice-cream {
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="heart"></div>
+    <div class="message">Untuk Kamu 💖</div>
+
+    <script>
+        // Fungsi untuk membuat "ledakan" ketika animasi hati terjadi
+        function createExplosion() {
+            const explosion = document.createElement('div');
+            explosion.classList.add('explosion');
+            document.body.appendChild(explosion);
+
+            // Hapus ledakan setelah animasi selesai
+            setTimeout(() => {
+                explosion.remove();
+            }, 600);
+        }
+
+        // Buat elemen yang jatuh seperti cinta atau es krim
+        function createFallingObject(type) {
+            const falling = document.createElement('div');
+            falling.classList.add('falling', type);
+            
+            // Tentukan posisi horizontal secara acak
+            const randomLeft = Math.floor(Math.random() * window.innerWidth) + 'px';
+            falling.style.left = randomLeft;
+            
+            // Set icon yang muncul (cinta atau es krim)
+            if (type === 'love') {
+                falling.textContent = '❤️';  // Cinta
+            } else {
+                falling.textContent = '🍦';  // Es krim
+            }
+            
+            document.body.appendChild(falling);
+
+            // Hapus elemen setelah animasi selesai
+            setTimeout(() => {
+                falling.remove();
+            }, 3000); // Sesuaikan waktu jatuh dengan durasi animasi @keyframes
+        }
+
+        // Buat ledakan secara berkala
+        setInterval(createExplosion, 2000);
+
+        // Buat objek cinta atau es krim jatuh secara berkala
+        setInterval(() => {
+            const types = ['love', 'ice-cream'];
+            const randomType = types[Math.floor(Math.random() * types.length)];
+            createFallingObject(randomType);
+        }, 500); // Setiap 0.5 detik akan muncul icon yang jatuh
+
+    </script>
+
+</body>
+</html>
